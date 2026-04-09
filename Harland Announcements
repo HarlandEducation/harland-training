@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Harland Announcements</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #C9A84C;
+    --gold-light: #E8C97A;
+    --obsidian: #0D0D0F;
+    --cream: #FAF7F2;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: #1a1a1c;
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 32px 16px 56px;
+    gap: 24px;
+  }
+
+  /* ── TOP INSTRUCTIONS ── */
+  .hint {
+    font-size: 13px;
+    color: rgba(250,247,242,0.35);
+    letter-spacing: 0.04em;
+    text-align: center;
+  }
+  .hint strong { color: var(--gold-light); }
+
+  /* ── CAROUSEL WRAPPER ── */
+  .carousel-wrap {
+    position: relative;
+    width: 100%;
+    max-width: 480px;
+  }
+
+  .carousel {
+    display: flex;
+    overflow-x: scroll;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    gap: 16px;
+    padding: 8px 4px 16px;
+    scrollbar-width: none;
+  }
+  .carousel::-webkit-scrollbar { display: none; }
+
+  /* ── CARD ── */
+  .card {
+    scroll-snap-align: center;
+    flex-shrink: 0;
+    width: 440px;
+    min-height: 320px;
+    background: var(--obsidian);
+    border-radius: 18px;
+    border: 1px solid rgba(201,168,76,0.18);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 12px 48px rgba(0,0,0,0.5);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+
+  .gold-bar {
+    height: 4px;
+    background: linear-gradient(90deg, transparent, var(--gold) 20%, var(--gold-light) 50%, var(--gold) 80%, transparent);
+    flex-shrink: 0;
+  }
+
+  /* ── CARD HEADER ── */
+  .card-header {
+    background: linear-gradient(160deg, #1C1A10, #0D0D0F);
+    padding: 22px 26px 16px;
+    border-bottom: 1px solid rgba(201,168,76,0.16);
+    flex-shrink: 0;
+  }
+
+  /* Cover card header (special) */
+  .card.cover .card-header {
+    padding: 28px 26px 22px;
+  }
+
+  .brand {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 30px;
+    font-weight: 700;
+    color: var(--gold);
+    letter-spacing: 0.04em;
+    line-height: 1;
+    margin-bottom: 5px;
+  }
+  .brand-sub {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(201,168,76,0.4);
+  }
+  .date-pill {
+    display: inline-block;
+    margin-top: 10px;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #6B6560;
+    border: 1px solid rgba(255,255,255,0.08);
+    background: rgba(255,255,255,0.03);
+    padding: 5px 14px;
+    border-radius: 20px;
+  }
+
+  /* Section tag */
+  .section-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--gold);
+    background: rgba(201,168,76,0.09);
+    border: 1px solid rgba(201,168,76,0.2);
+    border-radius: 20px;
+    padding: 3px 11px 3px 9px;
+  }
+  .section-tag::before {
+    content: '';
+    width: 5px; height: 5px;
+    background: var(--gold);
+    border-radius: 50%;
+  }
+
+  .card-title-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+  }
+  .card-icon-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .card-icon {
+    font-size: 24px;
+    line-height: 1;
+    flex-shrink: 0;
+  }
+  .card-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--cream);
+    letter-spacing: 0.01em;
+    line-height: 1.15;
+  }
+
+  /* ── CARD BODY ── */
+  .card-body {
+    padding: 20px 26px 24px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .body-text {
+    font-size: 15px;
+    line-height: 1.7;
+    color: rgba(250,247,242,0.65);
+  }
+  .body-text strong { color: var(--cream); font-weight: 600; }
+
+  /* CTA */
+  .cta {
+    padding: 10px 14px;
+    background: rgba(201,168,76,0.07);
+    border-left: 3px solid var(--gold);
+    border-radius: 0 5px 5px 0;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--gold-light);
+    line-height: 1.55;
+  }
+
+  /* Detail rows (dinner) */
+  .detail-box {
+    background: rgba(201,168,76,0.05);
+    border: 1px solid rgba(201,168,76,0.16);
+    border-radius: 8px;
+    padding: 13px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .detail-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 15px;
+    color: rgba(250,247,242,0.7);
+  }
+  .detail-row strong { color: var(--cream); font-weight: 600; }
+
+  /* Welcome names */
+  .names-box {
+    background: rgba(201,168,76,0.06);
+    border: 1px solid rgba(201,168,76,0.15);
+    border-radius: 8px;
+    padding: 14px 18px;
+  }
+  .names-list {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--cream);
+    line-height: 2;
+  }
+  .names-note {
+    font-size: 13px;
+    color: rgba(250,247,242,0.35);
+    margin-top: 6px;
+  }
+
+  /* ACK chips */
+  .ack-box {
+    background: rgba(0,0,0,0.3);
+    border: 1px solid rgba(201,168,76,0.16);
+    border-radius: 8px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .ack-instruction {
+    font-size: 15px;
+    color: rgba(250,247,242,0.68);
+    line-height: 1.6;
+  }
+  .ack-instruction strong { color: var(--cream); }
+  .chips {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .chip {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--gold-light);
+    background: rgba(201,168,76,0.09);
+    border: 1px solid rgba(201,168,76,0.26);
+    border-radius: 20px;
+    padding: 6px 18px;
+  }
+  .ack-deadline {
+    font-size: 12px;
+    color: rgba(250,247,242,0.28);
+    text-align: center;
+  }
+
+  /* RSVP options */
+  .rsvp-options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .rsvp-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 10px;
+    padding: 13px 16px;
+  }
+  .rsvp-emoji { font-size: 20px; flex-shrink: 0; }
+  .rsvp-label {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--cream);
+    flex: 1;
+  }
+  .rsvp-reply {
+    font-size: 12.5px;
+    font-weight: 600;
+    padding: 5px 13px;
+    border-radius: 20px;
+    white-space: nowrap;
+  }
+  .rsvp-yes { background: rgba(100,200,120,0.12); border: 1px solid rgba(100,200,120,0.28); color: #7DDB8A; }
+  .rsvp-no  { background: rgba(220,100,100,0.10); border: 1px solid rgba(220,100,100,0.24); color: #E08888; }
+
+  /* ── CARD FOOTER ── */
+  .card-footer {
+    margin-top: auto;
+    padding: 0 26px 18px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-shrink: 0;
+  }
+  .card-counter {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    color: rgba(250,247,242,0.2);
+  }
+  .card-nav {
+    display: flex;
+    gap: 5px;
+  }
+  .dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: rgba(201,168,76,0.2);
+    transition: background 0.2s, transform 0.2s;
+  }
+  .dot.active {
+    background: var(--gold);
+    transform: scale(1.3);
+  }
+
+  /* ── NAV BUTTONS ── */
+  .nav-row {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+  }
+  .nav-btn {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    color: var(--obsidian);
+    background: linear-gradient(135deg, var(--gold-light), var(--gold));
+    border: none;
+    border-radius: 30px;
+    padding: 10px 22px;
+    cursor: pointer;
+    transition: opacity 0.15s, transform 0.1s;
+    box-shadow: 0 3px 12px rgba(201,168,76,0.3);
+  }
+  .nav-btn:hover { opacity: 0.85; transform: translateY(-1px); }
+  .nav-btn:disabled { opacity: 0.3; cursor: default; transform: none; box-shadow: none; }
+  .nav-btn.ghost {
+    color: var(--gold);
+    background: transparent;
+    border: 1px solid rgba(201,168,76,0.3);
+    box-shadow: none;
+  }
+  .nav-btn.ghost:hover { background: rgba(201,168,76,0.08); }
+
+  /* Cover card content */
+  .cover-content {
+    padding: 24px 26px 28px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 20px;
+  }
+  .cover-summary {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .cover-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+    color: rgba(250,247,242,0.55);
+    padding: 8px 12px;
+    background: rgba(255,255,255,0.03);
+    border-radius: 8px;
+  }
+  .cover-item-icon { font-size: 16px; flex-shrink: 0; }
+  .cover-item-label { flex: 1; }
+  .cover-item-arrow { color: rgba(201,168,76,0.4); font-size: 12px; }
+  .cover-swipe-hint {
+    font-size: 13px;
+    color: rgba(250,247,242,0.25);
+    text-align: center;
+    letter-spacing: 0.04em;
+  }
+</style>
+</head>
+<body>
+
+<div class="hint">Swipe cards or use <strong>← →</strong> buttons below</div>
+
+<div class="carousel-wrap">
+  <div class="carousel" id="carousel">
+
+    <!-- ══════════ CARD 1: COVER ══════════ -->
+    <div class="card cover">
+      <div class="gold-bar"></div>
+      <div class="card-header">
+        <div class="brand">Harland Education</div>
+        <div class="brand-sub">Teacher Announcement</div>
+        <div class="date-pill" id="date-pill">April 2026</div>
+      </div>
+      <div class="cover-content">
+        <div class="cover-summary">
+          <div class="cover-item"><span class="cover-item-icon">🔵</span><span class="cover-item-label">Zoom Reminder</span><span class="cover-item-arrow">›</span></div>
+          <div class="cover-item"><span class="cover-item-icon">📝</span><span class="cover-item-label">John Locke Competition</span><span class="cover-item-arrow">›</span></div>
+          <div class="cover-item"><span class="cover-item-icon">🗣️</span><span class="cover-item-label">Debate Class</span><span class="cover-item-arrow">›</span></div>
+          <div class="cover-item"><span class="cover-item-icon">📱</span><span class="cover-item-label">Harland App — Phase 1</span><span class="cover-item-arrow">›</span></div>
+          <div class="cover-item"><span class="cover-item-icon">🎓</span><span class="cover-item-label">Harland Academic Coaching</span><span class="cover-item-arrow">›</span></div>
+          <div class="cover-item"><span class="cover-item-icon">🍽️</span><span class="cover-item-label">Staff Dinner — 18 April</span><span class="cover-item-arrow">›</span></div>
+          <div class="cover-item"><span class="cover-item-icon">👋</span><span class="cover-item-label">New Teachers</span><span class="cover-item-arrow">›</span></div>
+        </div>
+        <div class="cover-swipe-hint">Swipe to read each announcement →</div>
+      </div>
+      <div class="gold-bar"></div>
+    </div>
+
+    <!-- ══════════ CARD 2: ZOOM ══════════ -->
+    <div class="card">
+      <div class="gold-bar"></div>
+      <div class="card-header">
+        <div class="card-title-row">
+          <div class="card-icon-title">
+            <span class="card-icon">🔵</span>
+            <span class="card-title">Zoom — Personal Meeting ID</span>
+          </div>
+          <span class="section-tag">Reminder</span>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="body-text">When starting Zoom classes, please check <strong>"Use my Personal Meeting ID (PMI)"</strong> under New Meeting before starting your session.</div>
+        <div class="body-text">This keeps your session link consistent and ensures a smoother experience for both teachers and students.</div>
+      </div>
+      <div class="card-footer">
+        <span class="card-counter" id="counter-1"></span>
+        <div class="card-nav" id="dots"></div>
+      </div>
+      <div class="gold-bar"></div>
+    </div>
+
+    <!-- ══════════ CARD 3: JOHN LOCKE ══════════ -->
+    <div class="card">
+      <div class="gold-bar"></div>
+      <div class="card-header">
+        <div class="card-title-row">
+          <div class="card-icon-title">
+            <span class="card-icon">📝</span>
+            <span class="card-title">John Locke Competition</span>
+          </div>
+          <span class="section-tag">Announcement</span>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="body-text">An internationally recognised essay competition for secondary students. Develops critical thinking, independent research, and academic writing skills.</div>
+        <div class="body-text">Particularly valuable for students preparing for university applications.</div>
+        <div class="cta">👉 Know a great fit? Reply in your Teacher LINE group with the student's name + a brief reason.</div>
+      </div>
+      <div class="card-footer">
+        <span class="card-counter"></span>
+        <div class="card-nav"></div>
+      </div>
+      <div class="gold-bar"></div>
+    </div>
+
+    <!-- ══════════ CARD 4: DEBATE ══════════ -->
+    <div class="card">
+      <div class="gold-bar"></div>
+      <div class="card-header">
+        <div class="card-title-row">
+          <div class="card-icon-title">
+            <span class="card-icon">🗣️</span>
+            <span class="card-title">Debate Class</span>
+          </div>
+          <span class="section-tag">Announcement</span>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="body-text">Our Debate Class is designed to help students build confidence in speaking, reasoning, and expressing their ideas clearly in a structured, engaging environment.</div>
+        <div class="body-text">Open to students in <strong>G4–G12</strong>.</div>
+        <div class="cta">👉 Recommending a student? Drop their name + a short note in your Teacher LINE group.</div>
+      </div>
+      <div class="card-footer">
+        <span class="card-counter"></span>
+        <div class="card-nav"></div>
+      </div>
+      <div class="gold-bar"></div>
+    </div>
+
+    <!-- ══════════ CARD 5: HARLAND APP ══════════ -->
+    <div class="card">
+      <div class="gold-bar"></div>
+      <div class="card-header">
+        <div class="card-title-row">
+          <div class="card-icon-title">
+            <span class="card-icon">📱</span>
+            <span class="card-title">Harland App — Phase 1</span>
+          </div>
+          <span class="section-tag">Announcement</span>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="body-text">We are excited to launch <strong>Phase 1 of the Harland App</strong> before the end of April, aimed at enhancing communication and improving visibility of Harland products, memberships, and teachers.</div>
+        <div class="body-text">More updates will follow as we continue development. Watch this space! 🚀</div>
+      </div>
+      <div class="card-footer">
+        <span class="card-counter"></span>
+        <div class="card-nav"></div>
+      </div>
+      <div class="gold-bar"></div>
+    </div>
+
+    <!-- ══════════ CARD 6: HAC ══════════ -->
+    <div class="card">
+      <div class="gold-bar"></div>
+      <div class="card-header">
+        <div class="card-title-row">
+          <div class="card-icon-title">
+            <span class="card-icon">🎓</span>
+            <span class="card-title">Harland Academic Coaching</span>
+          </div>
+          <span class="section-tag">Announcement</span>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="body-text">HAC is a new initiative focused on supporting students' academic growth through personalised guidance, goal setting, and skill development.</div>
+        <div class="body-text">Some teachers have already started and seen a <strong>noticeable improvement in student engagement</strong>. Training is led by <strong>Coach Glen</strong> and can be arranged with Admin.</div>
+        <div class="cta">👉 Interested? Message your Teacher LINE group for details.</div>
+      </div>
+      <div class="card-footer">
+        <span class="card-counter"></span>
+        <div class="card-nav"></div>
+      </div>
+      <div class="gold-bar"></div>
+    </div>
+
+    <!-- ══════════ CARD 7: DINNER ══════════ -->
+    <div class="card">
+      <div class="gold-bar"></div>
+      <div class="card-header">
+        <div class="card-title-row">
+          <div class="card-icon-title">
+            <span class="card-icon">🍽️</span>
+            <span class="card-title">Staff &amp; Teacher Dinner</span>
+          </div>
+          <span class="section-tag">Event</span>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="body-text">We'd love to celebrate our team together! Join us for dinner — all details below.</div>
+        <div class="detail-box">
+          <div class="detail-row">📅 <span><strong>Date:</strong> Friday, 18 April 2026</span></div>
+          <div class="detail-row">🕡 <span><strong>Time:</strong> 18:30</span></div>
+          <div class="detail-row">📍 <span><strong>Venue:</strong> The Sky Tower, Taipei</span></div>
+        </div>
+        <div class="cta">👉 Please RSVP on the next card — we'd love to know if you can join us!</div>
+      </div>
+      <div class="card-footer">
+        <span class="card-counter"></span>
+        <div class="card-nav"></div>
+      </div>
+      <div class="gold-bar"></div>
+    </div>
+
+    <!-- ══════════ CARD 8: RSVP ══════════ -->
+    <div class="card">
+      <div class="gold-bar"></div>
+      <div class="card-header">
+        <div class="card-title-row">
+          <div class="card-icon-title">
+            <span class="card-icon">📋</span>
+            <span class="card-title">Dinner RSVP</span>
+          </div>
+          <span class="section-tag">Action needed</span>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="body-text">Please <strong>reply in your Teacher LINE group</strong> with one of the following by <strong>Wednesday, 15 April</strong>:</div>
+        <div class="rsvp-options">
+          <div class="rsvp-row">
+            <span class="rsvp-emoji">✅</span>
+            <span class="rsvp-label">Yes, I'll be there!</span>
+            <span class="rsvp-reply rsvp-yes">✅ Attending</span>
+          </div>
+          <div class="rsvp-row">
+            <span class="rsvp-emoji">❌</span>
+            <span class="rsvp-label">Sorry, I can't make it</span>
+            <span class="rsvp-reply rsvp-no">❌ Not attending</span>
+          </div>
+        </div>
+      </div>
+      <div class="card-footer">
+        <span class="card-counter"></span>
+        <div class="card-nav"></div>
+      </div>
+      <div class="gold-bar"></div>
+    </div>
+
+    <!-- ══════════ CARD 9: NEW TEACHERS ══════════ -->
+    <div class="card">
+      <div class="gold-bar"></div>
+      <div class="card-header">
+        <div class="card-title-row">
+          <div class="card-icon-title">
+            <span class="card-icon">👋</span>
+            <span class="card-title">Welcome, New Teachers!</span>
+          </div>
+          <span class="section-tag">Team</span>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="body-text">Please join us in warmly welcoming our newest team members to the Harland community!</div>
+        <div class="names-box">
+          <div class="names-list">
+            Ms. Marie Manuel<br>
+            Mr. Michael Moura<br>
+            Mr. William Johnson<br>
+            Mr. Alex Teachey
+          </div>
+          <div class="names-note">We're so glad to have you with us. 🎉</div>
+        </div>
+      </div>
+      <div class="card-footer">
+        <span class="card-counter"></span>
+        <div class="card-nav"></div>
+      </div>
+      <div class="gold-bar"></div>
+    </div>
+
+    <!-- ══════════ CARD 10: ACKNOWLEDGE ══════════ -->
+    <div class="card">
+      <div class="gold-bar"></div>
+      <div class="card-header">
+        <div class="card-title-row">
+          <div class="card-icon-title">
+            <span class="card-icon">✅</span>
+            <span class="card-title">Please Acknowledge</span>
+          </div>
+          <span class="section-tag">Action needed</span>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="ack-box">
+          <div class="ack-instruction">Once you've read all announcements, please <strong>reply in the group chat</strong> with one of the following:</div>
+          <div class="chips">
+            <span class="chip">✅ Noted</span>
+            <span class="chip">✅ Read</span>
+          </div>
+          <div class="ack-deadline">Kindly acknowledge within 24 hours — thank you! 🙏</div>
+        </div>
+      </div>
+      <div class="card-footer">
+        <span class="card-counter"></span>
+        <div class="card-nav"></div>
+      </div>
+      <div class="gold-bar"></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- NAV BUTTONS -->
+<div class="nav-row">
+  <button class="nav-btn ghost" id="btn-prev" onclick="navigate(-1)">← Prev</button>
+  <button class="nav-btn" id="btn-next" onclick="navigate(1)">Next →</button>
+</div>
+
+<script>
+  const carousel = document.getElementById('carousel');
+  const cards = Array.from(carousel.querySelectorAll('.card'));
+  const total = cards.length;
+  let current = 0;
+
+  // Date
+  const months = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+  document.getElementById('date-pill').textContent = months[new Date().getMonth()] + ' ' + new Date().getFullYear();
+
+  // Build dot navs on each card
+  cards.forEach((card, i) => {
+    const dotsEl = card.querySelector('.card-nav');
+    const counterEl = card.querySelector('.card-counter');
+    if (!dotsEl) return;
+
+    // dots
+    cards.forEach((_, j) => {
+      const d = document.createElement('div');
+      d.className = 'dot' + (j === i ? ' active' : '');
+      dotsEl.appendChild(d);
+    });
+
+    // counter
+    if (counterEl) counterEl.textContent = `${i + 1} / ${total}`;
+  });
+
+  function updateDots(idx) {
+    cards.forEach(card => {
+      const dots = card.querySelectorAll('.dot');
+      dots.forEach((d, j) => {
+        d.classList.toggle('active', j === idx);
+      });
+      const counter = card.querySelector('.card-counter');
+      if (counter) counter.textContent = `${idx + 1} / ${total}`;
+    });
+    document.getElementById('btn-prev').disabled = idx === 0;
+    document.getElementById('btn-next').disabled = idx === total - 1;
+    document.getElementById('btn-next').textContent = idx === total - 1 ? 'Done ✓' : 'Next →';
+  }
+
+  function navigate(dir) {
+    current = Math.max(0, Math.min(total - 1, current + dir));
+    cards[current].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+    updateDots(current);
+  }
+
+  // Sync dots on scroll
+  carousel.addEventListener('scroll', () => {
+    const scrollLeft = carousel.scrollLeft;
+    const cardWidth = cards[0].offsetWidth + 16;
+    const idx = Math.round(scrollLeft / cardWidth);
+    if (idx !== current) {
+      current = idx;
+      updateDots(current);
+    }
+  });
+
+  updateDots(0);
+</script>
+</body>
+</html>
