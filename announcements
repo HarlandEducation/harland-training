@@ -667,13 +667,13 @@ body {
             <div class="dinner-banner-main">
               <div class="dinner-icon">&#127863;</div>
               <div class="dinner-text">
-                <div class="dinner-title">Q1 Teacher&rsquo;s Dinner &mdash; Friday 25 April</div>
+                <div class="dinner-title">Q1 Teacher&rsquo;s Dinner &mdash; Saturday 25 April</div>
                 <div class="dinner-sub">18:15 &middot; GB Brewery, Xinyi &middot; Tap for details &amp; RSVP</div>
               </div>
               <div class="dinner-badge" id="dinner-chevron">&#8964;</div>
             </div>
             <div class="dinner-expand" id="dinner-detail">
-              <div class="dinner-expand-row"><span class="detail-icon">&#128197;</span><span><strong>Friday 25 April 2026</strong> &middot; 18:15</span></div>
+              <div class="dinner-expand-row"><span class="detail-icon">&#128197;</span><span><strong>Saturday 25 April 2026</strong> &middot; 18:15</span></div>
               <div class="dinner-expand-row"><span class="detail-icon">&#128205;</span><span><strong>GB Brewery</strong> &middot; No. 11 Songshou Road, 2F &middot; Xinyi District, Taipei</span></div>
               <div class="dinner-expand-row"><span class="detail-icon">&#127870;</span><span>Celebrate Q1 and welcome our new team members</span></div>
               <div class="dinner-expand-row" style="margin-top:2px">
